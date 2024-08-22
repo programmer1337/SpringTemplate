@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+<head>
+    <title>Error Page</title>
+    <link href="/styles/error-page.css" th:href="@{/styles/error-page.css}" rel="stylesheet"/>
+</head>
+<body>
+<h1>Ooh... </h1>
+<div class="app-error">
+    <p>We have <span th:text="${errorNumber}">XXX</span> error((</p>
+    <p th:text="${errorText}">We have some problems</p>
+</div>
+</body>
+</html>

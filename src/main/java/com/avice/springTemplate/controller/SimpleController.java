@@ -1,4 +1,4 @@
-package com.example.spring.controller;
+package com.avice.springTemplate.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
@@ -20,7 +20,7 @@ public class SimpleController {
         return modelAndView;
     }
 
-    @GetMapping("/test")
+    @GetMapping("/error-page")
     public ModelAndView test(Model model) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error-page");

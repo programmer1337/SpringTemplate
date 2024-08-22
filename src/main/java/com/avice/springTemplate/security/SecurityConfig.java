@@ -1,4 +1,5 @@
-package com.example.spring.security;
+/*
+package com.avice.springTemplate.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,3 +22,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+*/

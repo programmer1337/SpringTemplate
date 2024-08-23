@@ -1,0 +1,81 @@
+networks:
+  overlay:
+
+volumes:
+  pg_data:
+
+services:
+  reverse-proxy:
+    # The official v3.1 Traefik docker image
+    image: traefik:v3.1
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker
+    # --api.insecure=true --providers.docker.exposedbydefault=false
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - overlay
+
+  books-service:
+    image: spring-template:0.0.1
+    container_name: books-service
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.books-service.rule=Host(`books-service.localhost`) && PathPrefix(`/book`)"
+    ports:
+      - '80'
+    networks:
+      - overlay
+
+  template-service:
+    image: spring-template:0.0.1
+    container_name: template-service
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.template-service.rule=Host(`template-service.localhost`) && PathPrefix(`/`)"
+    ports:
+      - '80'
+    networks:
+      - overlay
+
+  database:
+    image: postgres:15
+    container_name: database-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=books
+      - POSTGRES_USER=booksUser
+      - POSTGRES_PASSWORD=booksPass
+    ports:
+      - '5432'
+    networks:
+      - overlay
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.pgadmin-auth.basicauth.users=test:$$2a$$12$$i8Rve/qU804Tn/vZwA12m.iivIJL.9Xtzj/ecMOJVtpCNlt35q7Va/"
+      - "traefik.http.middlewares.test-retry.retry.attempts=3"
+      #      - "traefik.http.middlewares.test-retry.retry.initialinterval=10s"
+      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.docker.localhost`)"
+      - "traefik.http.routers.pgadmin.middlewares=test-retry@docker,pgadmin-auth@docker"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - '80'
+    networks:
+      - overlay

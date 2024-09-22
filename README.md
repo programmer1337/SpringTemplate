@@ -6,8 +6,8 @@
 В моей реализации необходимо прокинуть JAR-файл при сборке проекта. \
 Используя команду
 ```bash
-  docker build --build-arg JAR_FILE="./build/libs/spring-template-0.0.1-SNAPSHOT.jar" -t  spring-template:0.0.1 .
-  ```
+docker build --build-arg JAR_FILE="./build/libs/spring-template-0.0.1-SNAPSHOT.jar" -t  spring-template:0.0.1 .
+```
 - `--build-arg` - аргументы, в данном случае JAR_FILE, полученный после сборки.
 - `-t` - позволяет указать имя образа и тег версии для него. `image_name:tag`
 
@@ -24,38 +24,38 @@
 При наличии `-rm` после остановки контейнер уничтожится. При наличии options будет перебита конфигурация, прописанная в docker-compose.
 
 ```bash
-  docker compose run [-rm] [service-name] [options]
-  ```
+docker compose run [-rm] [service-name] [options]
+```
 - Для запуска конкретного сервиса с зависимостями.
 ```bash
-  docker compose up -d [service-name]
-  ```
+docker compose up -d [service-name]
+```
 - Для запуска всех контейнеров и сервисов.
 ```bash
-  docker compose up -d
-  ```
+docker compose up -d
+```
 - Остановить все запущенные контейнеры
 ```bash
-  docker stop $(docker ps -q)
-  ```
+docker stop $(docker ps -q)
+```
 - Удалить все контейнеры
 ```bash
-  docker rm $(docker ps -a -q)
-  ```
+docker rm $(docker ps -a -q)
+```
 - Удалить все образы
 ```bash
-  docker rmi $(docker images -q)
+docker rmi $(docker images -q)
   ```
 - Удалить все тома
 ```bash
-  docker volume rm $(docker volume ls -q)
-  ```
+docker volume rm $(docker volume ls -q)
+```
 
 ### Работа с содержимым контейнера
 Для подключения к контейнеру используем следующую команду
 ```bash
-  docker exec -it [container_hash] container command [ARG...]
-  ```
+docker exec -it [container_hash] container command [ARG...]
+```
 - `docker exec` - выполнение команды внутри контейнера
 - `-it` - два флага `-i` (--interactive) запуск контейнера в интерактивном режиме, `-t` (--terminal) подключение терминала
 - `container command` - команда для исполнения в терминале контейнера
@@ -63,8 +63,8 @@
 
 ### Пример. Подключение к контейнеру базы данных Postgres
 ```bash
-  docker exec -it [container_hash] psql -U booksUser -d books
-  ```
+docker exec -it [container_hash] psql -U booksUser -d books
+```
 
 # Кладовка
 
